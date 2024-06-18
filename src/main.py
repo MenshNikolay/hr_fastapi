@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 import uvicorn
+from src.auth.router import user_router
 
 
 
@@ -15,6 +16,7 @@ def start():
         "Reason": "Improve programing skills",
         "Author": "N.R. Mensh"
     }
+app.include_router(user_router, prefix="/user", tags=["registration new user"])
 
 if __name__ == "__main__":
     uvicorn.run("main:app", reload=True)
