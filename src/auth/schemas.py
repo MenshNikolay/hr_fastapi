@@ -4,14 +4,14 @@ from typing import Optional
 from datetime import date
 
 class SatusEnum(str, Enum):
-    unprocessing = "unprocessing"
-    processing = "processing"
-    denied = "denied"
-    closed = "closed"
+    unprocessing = "Не в работе"
+    processing = "В работе"
+    denied = "Отказ"
+    closed = "Сделка закрыта"
 
 
 class ClientCreate(BaseModel):
-    account_number: int = constr(min_length=20, max_length=20)
+    account_number: str = constr(min_length=20, max_length=20)
     name: str 
     surname: str 
     father_name: str
@@ -28,18 +28,18 @@ class UserCreate(BaseModel):
     
 
 class ClientResponse(BaseModel):
-    id: int
+    
     name: str 
     surname: str 
     father_name: str
     b_day: date
-    inn: str 
+    inn: int
     supervisor: str
-    role: SatusEnum
+    status: SatusEnum
 
     class Config:
         ORM = True
-
+        from_attributes = True 
 
 class UserResponse(BaseModel):
     

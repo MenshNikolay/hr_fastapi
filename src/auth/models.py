@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Date, ForeignKey,MetaData, Enum as SQLENUM
+from sqlalchemy import Column, Integer, String, Date, ForeignKey,MetaData,BigInteger, Enum as SQLENUM
 from sqlalchemy.ext.declarative import declarative_base
 from enum import Enum
 
@@ -7,10 +7,10 @@ metadata = MetaData()
 Base = declarative_base(metadata=metadata)
 
 class StatusEnum(str, Enum):
-    unprocessing = "unprocessing"
-    processing = "processing"
-    denied = "denied"
-    closed = "closed"
+    unprocessing = "Не в работе"
+    processing = "В работе"
+    denied = "Отказ"
+    closed = "Сделка закрыта"
 
 class User(Base):
     __tablename__ = "user"
@@ -24,12 +24,12 @@ class User(Base):
 class Client(Base):
     __tablename__ = "clients"
 
-    account_number = Column(Integer, nullable=False)
+    account_number = Column(String, nullable=False)
     name = Column(String, nullable=False)
     surname = Column(String, nullable=False)
     father_name = Column(String, nullable=False)
     b_day = Column(Date, nullable = False)
-    inn = Column(Integer, primary_key=True, index=True)
+    inn = Column(BigInteger, primary_key=True, index=True)
     supervisor = Column(ForeignKey(User.fullname))
     status = Column(SQLENUM(StatusEnum), default=StatusEnum.unprocessing) 
 
