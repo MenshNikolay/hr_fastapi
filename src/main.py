@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 import uvicorn
+from src.staff.router import login_router
 from src.auth.router import user_router
+from fastapi.templating import Jinja2Templates
 
 
 
@@ -16,7 +18,8 @@ def start():
         "Reason": "Improve programing skills",
         "Author": "N.R. Mensh"
     }
-app.include_router(user_router, prefix="/user", tags=["registration new user"])
+app.include_router(login_router)
+app.include_router(user_router)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", reload=True)

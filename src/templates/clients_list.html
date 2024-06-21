@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clients</title>
+</head>
+<body>
+    <h1>Клиенты</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ИНН</th>
+                <th>Имя</th>
+                <th>Фамилия</th>
+                <th>Отчество</th>
+                <th>Статус</th>
+                <th>Изменить статус</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for client in clients %}
+                <tr>
+                    <td>{{ client.inn }}</td>
+                    <td>{{ client.name }}</td>
+                    <td>{{ client.surname }}</td>
+                    <td>{{ client.father_name }}</td>
+                    <td>{{ client.status }}</td>
+                    <td>
+                        <form action="/clients/{{ client.inn }}" method="post">
+                            <select name="status">
+                                <option value="unprocessing" {% if client.status == "Не в работе" %}selected{% endif %}>Не в работе</option>
+                                <option value="processing" {% if client.status == "В работе" %}selected{% endif %}>В работе</option>
+                                <option value="denied" {% if client.status == "Отказ" %}selected{% endif %}>Отказ</option>
+                                <option value="closed" {% if client.status == "Сделка закрыта" %}selected{% endif %}>Сделка закрыта</option>
+                            </select>
+                            <button type="submit">Обновить статус</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
+

@@ -1,19 +1,17 @@
 from fastapi import FastAPI, Depends, HTTPException,APIRouter
-from passlib.context import CryptContext
+from src import models
+from src.staff.user_operation import transform_pwd
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from src.auth import models, schemas
-from src.database import get_async_sessioon, engine
+from src.auth import schemas
+from src.database import get_async_sessioon
 from src.auth.schemas import UserResponse, ClientResponse
 
 user_router = APIRouter()
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated = "auto")
-
-def transform_pwd(password:str) -> str:
-    return pwd_context.hash(password)
 
 
-@user_router.post("/", response_model=UserResponse)
+
+@user_router.post("/new_user", response_model=UserResponse)
 async def  create_new_user(user: schemas.UserCreate, 
                     db: AsyncSession = Depends(get_async_sessioon)):
     result = await db.execute(select(models.User).filter(models.User.login == user.login))
@@ -32,7 +30,7 @@ async def  create_new_user(user: schemas.UserCreate,
     return user_response
 
 
-@user_router.post("/client", response_model=ClientResponse)
+@user_router.post("/new_client", response_model=ClientResponse)
 async def create_new_client(client: schemas.ClientCreate, 
                             db: AsyncSession = Depends(get_async_sessioon)):
     result = await db.execute(select(models.Client).filter(models.Client.inn == client.inn))
@@ -55,9 +53,9 @@ async def create_new_client(client: schemas.ClientCreate,
     await db.refresh(new_client)
     client_response = ClientResponse.from_orm(new_client)
     return client_response
-
+'''
 @user_router.post("/auth")
-async def login_user(
-    db: AsyncSession = Depends(get_async_sessioon)
+async def login_user(db: AsyncSession = Depends(get_async_sessioon),
     login: str
 )
+'''
